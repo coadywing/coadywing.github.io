@@ -1,0 +1,61 @@
+<div class="introduction">
+	{{- range $index, $publications := .Site.Params.publications -}}
+		<br>
+	<div class="year" id="#{{ $publications.cat_id }}" >{{ $publications.year }}</div>
+	<h5 id="{{ $publications.cat_id }}"></h5>
+
+	<ul style="list-style: none;">
+		{{ range $elem_index, $publication := $publications.paper }}
+		<li list-style-position: outside>
+			{{ if $publication.link }}
+			<a href="{{ $publication.link }}" target="_blank" class="publications"> {{ $publication.name }}.</a>
+			{{ else }}
+			<p class="publications">{{ $publication.name }}.</p>
+			{{ end }}
+			<br>
+			<p class="collaborators"> {{$publication.authors | markdownify }}</p>
+			<br>
+			<p class="collaborators"> {{$publication.current_status_1 | markdownify }}</p>
+			<p class="OtherPaperInfo"> {{$publication.current_status_2 | markdownify }}</p>
+			{{ if or ($publication.code_link) ($publication.ungated_link) ($publication.abstract_id) }}
+			<span class="code_blog">
+				{{ with $publication.ungated_link }}
+					[<a href="{{ $publication.ungated_link }}"  target="_blank" >ungated link</a>] 
+					{{ with $publication.nber_link }}
+						[<a href="{{ $publication.nber_link }}"  target="_blank" >NBER working paper</a>]
+					{{ end }}
+				{{ else }}
+					{{ with $publication.nber_link }}
+						[<a href="{{ $publication.nber_link }}"  target="_blank" >NBER working paper</a>] 
+					{{ end }}
+				{{ end }}
+				{{ with $publication.code_link }}
+				[<a href="{{ $publication.code_link }}"  target="_blank" >code</a>]
+				{{ end }}
+				{{ with $publication.bonus }}
+					{{ $publication.bonus | markdownify }} 
+		   		{{ end }}
+        <!-- Uncomment this to have abstracts on page  --->
+        <!-- font-size: 15px; font-family: Ubuntu
+        {{ with $publication.abstract_id }}
+        [<a onclick="openClose('{{ $publication.abstract_id }}')" style="cursor:hand; cursor:pointer">view abstract</a>]
+        {{ end }}
+        --->
+      </span>
+	  <span class="code_blog">
+		{{ with $publication.media }}
+		<p> <font face="Ubuntu, sans-serif">Media:</font> {{ $publication.media | markdownify }} </p>
+		{{ end }}
+	  </span>
+
+      <br>
+      {{ end }}
+       <div onClick="openClose('{{ $publication.abstract_id }}')" style="cursor:hand; cursor:pointer;"></div>
+       <div id="{{ $publication.abstract_id }}" class="texter">
+        {{ $publication.abstract | markdownify }}
+       </div>
+		</li>
+		{{ end }}
+	</ul>
+	{{- end -}}
+</div>
